@@ -1,0 +1,10 @@
+<div mat-dialog-content>
+  <p>Add {{data.isFile ? 'File' : 'Folder'}} </p>
+  <mat-form-field>
+    <input matInput #inpt [placeholder]="'Enter '+(data.isFile ? 'File' : 'Folder')+' name'">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.animal" (click)="onSubmit(inpt.value)">Ok</button>
+</div>
