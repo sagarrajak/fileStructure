@@ -7,6 +7,7 @@ import { NewFolderDialogComponent } from '../new-folder-dialog/new-folder-dialog
 interface Node {
   name: string;
   children?: Node[];
+  id: number;
 }
 
 export interface IDialogData {
@@ -24,7 +25,8 @@ export class MainComponent {
 
   constructor(public dialog: MatDialog) {
     this.dataSource.data = [{
-      name: 'root'
+      name: 'root',
+      id: Math.floor(Math.random()*1000000)
     }];
   }
 
@@ -38,12 +40,8 @@ export class MainComponent {
     this.openDialog(true, parentnode);
   }
 
-  public hasChild = (_: number, node: Node) => !!node.children && node.children.length > 0;
+  public hasChild = (_: number, node: Node) => !!node.children;
 
-
-  public addToRoot(name: string): void {
-
-  }
 
   public openDialog(isFile: boolean, parentnode: Node): void {
     const dialog = this.dialog.open(NewFolderDialogComponent, {
@@ -52,9 +50,22 @@ export class MainComponent {
       data: {
         isFile
       }
-    })
-    dialog.afterClosed().subscribe(result => {
-      console.log({ result });
     });
+
+
+    dialog.afterClosed().subscribe(result => {
+        if (!parentnode.children) parentnode.children = [];
+          parentnode.children.push({
+            'name': result,
+            children: isFile ? null: [],
+            id: Math.floor(Math.random()*1000000)
+          }) 
+    });
+
   }
+
+  private dfs(): void {
+    
+  }
+
 }
